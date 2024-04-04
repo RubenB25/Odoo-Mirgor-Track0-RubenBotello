@@ -1,6 +1,6 @@
 ## Configuración inicial
 
-#### 1. Prerequisitos
+#### 0. Prerequisitos
 -  [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 -  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 -  [git-remote-codecommit](https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-git-remote-codecommit.html#setting-up-git-remote-codecommit-install)
@@ -31,4 +31,10 @@ docker-compose up
 Para detener y eliminar los contenedores creados por Docker-Compose, utiliza el siguiente comando:
 ```sh
 docker-compose down
+```
+
+#### 4. Acceso a Odoo a través del navegador
+Una vez que Odoo esté en ejecución, abre tu navegador web y visita la siguiente URL:
+```sh
+http://localhost:8069
 ```
