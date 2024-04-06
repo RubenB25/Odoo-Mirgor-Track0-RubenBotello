@@ -1,5 +1,5 @@
 ## Configuración inicial
-
+### Paso a paso para poder clonar el repo
 #### 0. Prerequisitos
 -  [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 -  [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
