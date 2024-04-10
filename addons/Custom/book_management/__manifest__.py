@@ -11,6 +11,7 @@
     ],
     'data': [
         'security/ir.model.access.csv',
-        'views/book_management_view.xml'
-    ]
+        'views/book_management_view.xml',
+    ],
+    'demo':
 }
