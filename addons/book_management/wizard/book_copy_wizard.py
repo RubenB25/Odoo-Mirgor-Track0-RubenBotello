@@ -71,15 +71,16 @@ class BookSaleWizard(models.Model):
             'company_id': self.env.company
         })
         # self.action_notification()  
-        self.book_copy.action_send_mail()
+        if self.status != 'on_shelf':
+            self.book_copy.action_send_mail()
+            base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+            report_url = '/report/html/book_management.book_copy_complete_report/%s' % self.book_copy.id
+            full_url = base_url + report_url
 
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        report_url = '/report/html/book_management.book_copy_complete_report/%s' % self.book_copy.id
-        full_url = base_url + report_url
-
-        return {
-        'type': 'ir.actions.act_url',
-        'url': full_url,
-        'target': 'new',
-        }
+            return {
+            'type': 'ir.actions.act_url',
+            'url': full_url,
+            'target': 'new',
+            }
+            
         return {'type': 'ir.actions.act_window_close'}
