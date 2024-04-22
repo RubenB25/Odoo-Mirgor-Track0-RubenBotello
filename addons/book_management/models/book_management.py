@@ -3,20 +3,27 @@ from odoo import models,fields, api
 class BookManagement(models.Model):
     _name = "book.management"
     _description = "Book Management"
-    _rec_name = "complete_name"
+    _rec_name = "title"
     
-    author = fields.Char(string="Author",default="Algo")
-    release_date = fields.Char(string="Date")
-    summary = fields.Char(string="Summary")
-    total_pages = fields.Integer(string="Pages",default=0)
-    author_continues_writing_books = fields.Boolean(string="Still writing books?")
-    complete_name = fields.Char(string="Nombre Completo", compute="_complete_name")
-    res_partner_id = fields.Many2one('res.partner', string='Contacto')
-    @api.depends('author','total_pages')
-    def _complete_name(self):
-        for rec in self:
-            if rec.author and rec.total_pages:
-                rec.complete_name = '%s - %s' % (rec.author, rec.total_pages)
-            else:
-                rec.complete_name = rec.author
-            
+    
+    author_ids = fields.Many2one('author.management','book_id', required=True)
+    title = fields.Char(string="Title", required=True)
+    category_ids = fields.Many2many('book.category', required=True)
+    release_date = fields.Date(string="Release date", required=True)
+    summary = fields.Char(string="Summary", required=True) 
+    total_pages = fields.Integer(string="Total pages", default=0, required=True)
+    price = fields.Monetary(string="Value", currency_field='currency_id', required=True)
+    currency_id = fields.Many2one('res.currency', string='Currency')
+    copy_ids = fields.One2many('book.copy', 'book_id', string='Book Copies', ondelete="cascade")
+    
+    def action_open_book_sale_wizard(self):
+        first_available_copy = self.copy_ids.filtered(lambda copy: copy.available)[:1]
+        if first_available_copy:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Buy/Rent Book',
+                'view_mode': 'form',
+                'res_model': 'book.sale.wizard',
+                'target':'new',
+                'context': {'default_copy_id': first_available_copy.id},
+            }

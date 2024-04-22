@@ -7,17 +7,17 @@
             <field name="model">book.management</field>
             <field name="arch" type="xml">
                 <form>
-                    <group string="Author Information">
-                        <field name="author"/>
-                        <field name="res_partner_id"/>
-                        <field name="author_continues_writing_books"/>
-                    </group> 
-                    <group string="Book Information">
-                        <field name="summary"/>
-                        <field name="release_date"/>
-                        <field name="total_pages"/>
-                        <field name="complete_name" invisible="1"/>
-                    </group>
+                    <sheet>
+                        <group string="Book Information">
+                            <field name="title" string="Title"/>
+                            <field name="price" string="Price"/>
+                            <field name="author_ids" string="Author" />
+                            <field name="summary"/>
+                            <field name="category_ids" widget="many2many_tags"/>
+                            <field name="release_date"/>
+                            <field name="total_pages"/>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -26,8 +26,13 @@
             <field name="name">Book Management</field>
             <field name="model">book.management</field>
             <field name="arch" type="xml">
+
                 <tree string="Books">
-                    <field name="author"/>
+                    <field name="title" string="Title"/>
+                    <field name="price" string="Price"/>
+                    <field name="author_ids" string="Author" />
+                    <field name="summary"/>
+                    <field name="category_ids" widget="many2many_tags"/>
                     <field name="release_date"/>
                     <field name="total_pages"/>
                 </tree>
@@ -42,10 +47,9 @@
             <field name="model">book.management</field>
             <field name="arch" type="xml">
                 <search string="Search">
-                    <field string="Author" name="author"/>
+                    <field string="Author" name="author_ids"/>
+                    <field string="Price" name="price"/>
                     <field string="Total Pages" name="total_pages"/>
-                    <filter string="Still writing?" name="author_continues_writing_books" domain="[('author_continues_writing_books', '=', True)]"/>
-
                     <!-- Group by -->
                     <group expand="1" string="Group by Release date">
                         <filter string="Release date" name="release_date" context="{'group_by': 'release_date'}"/>
@@ -54,7 +58,7 @@
                         <filter string="Total pages grouped" name="total_pages" context="{'group_by': 'total_pages'}"/>
                     </group>
                      <group expand="3" string="Group by Author">
-                        <filter string="Author grouped" name="author" context="{'group_by': 'author'}"/>
+                        <filter string="Author grouped" name="author" context="{'group_by': 'author_ids'}"/>
                     </group>
                 </search>
             </field>
@@ -75,9 +79,14 @@
             <field name="sequence" eval="10"/>
         </record>
 
-         <record id="menu_library_book" model="ir.ui.menu">
+        <record id="menu_library_book" model="ir.ui.menu">
             <field name="name">Books</field>
             <field name="parent_id" ref="menu_library"/>
+            <field name="action" ref="action_library_book"/>
+        </record>
+        <record id="menu_library_book_admin" model="ir.ui.menu">
+            <field name="name">Book list</field>
+            <field name="parent_id" ref="menu_library_book"/>
             <field name="action" ref="action_library_book"/>
         </record>
     </data>
